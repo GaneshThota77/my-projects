@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Assistant</title>
+</head>
+<body>
+    <h1>HR Assistant</h1>
+    <div>
+        <label for="userInput">Enter your query:</label>
+        <input type="text" id="userInput">
+        <button onclick="sendMessage()">Submit</button>
+    </div>
+    <div id="response"></div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            const responseDiv = document.getElementById("response");
+            
+            // Send a POST request to your API endpoint
+            fetch("/handle_message", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "user_message": userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the response from your HR assistant
+                responseDiv.textContent = data.message;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                responseDiv.textContent = "An error occurred.";
+            });
+        }
+    </script>
+</body>
+</html>
